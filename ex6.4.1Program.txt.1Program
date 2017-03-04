@@ -1,0 +1,77 @@
+1. Average_data = load '/user/acadgild/Desktop/titanicdata' using PigStorage(',') as (pid:int, sid:int, pclass:int, name:chararray, sex:chararray, age:int, sibsp:int, parch:int, ticket:chararray, fare:chararray, cabin:chararray, embarked:chararray);
+
+ 
+
+//line 1 will load the dataset into the pigstorage.
+
+
+
+2.Filter_Dead = filter Average_data by sid==1;
+
+
+
+//line 2 will filter the records containing only survival id 1 which means who are dead.
+
+
+
+3.filter_male = filter Filter_Dead by sex == 'male';
+
+
+
+//line 3 will filter the records of Filter_Dead containing only gender male.
+
+ 
+
+4.filter_female = filter Filter_Dead by sex == 'female';
+
+
+
+//line 4 will filter the records of Filter_Dead containing only gender female.
+
+ 
+
+5.group_filter_male = group filter_male all;
+
+
+
+//line 5 will group the filter_male respect to all columns.
+
+
+
+6.group_filter_female = group filter_female all;
+
+
+
+//line 6 will group the filter_female respect to all columns.
+
+
+
+7.A_male = foreach group_filter_male generate AVG(filter_male.age);
+
+
+
+//line 7 will iterate through the records of grouped data to find the average age of male.
+
+
+
+8.A_female = foreach group_filter_female generate AVG(filter_female.age);
+
+
+
+//line 8 will iterate through the records of grouped data to find the average age of female.
+
+
+
+9.dump A_male;
+
+
+
+//line 9 will display the result ie average age of male who died.
+
+
+
+10.dump A_female;
+
+
+
+//line 10 will display the result ie average age of female who died.
